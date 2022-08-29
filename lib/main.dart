@@ -1,9 +1,8 @@
-import 'dart:async';
-
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_for_my_training/bloc/auth_cubit.dart';
-import 'package:flutter_app_for_my_training/logic.dart';
+import 'package:flutter_app_for_my_training/screens/chat_screen.dart';
+
 import 'package:flutter_app_for_my_training/screens/create_post_screen.dart';
 import 'package:flutter_app_for_my_training/screens/posts_screen.dart';
 import 'package:flutter_app_for_my_training/screens/sign_up_screen.dart';
@@ -37,7 +36,8 @@ class MyApp extends StatelessWidget {
           SignInScreen.id: ((context) => const SignInScreen()),
           SignUpScreen.id: ((context) => const SignUpScreen()),
           PostsScreen.id: ((context) => const PostsScreen()),
-          CreatePostScreen.id: ((context) => const CreatePostScreen())
+          CreatePostScreen.id: ((context) => const CreatePostScreen()),
+          ChatScreen.id: (context) => const ChatScreen(),
         },
       ),
     );

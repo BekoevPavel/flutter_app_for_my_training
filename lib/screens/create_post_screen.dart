@@ -21,6 +21,7 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   Future<void> _submit({
     required File image,
   }) async {
+    Navigator.pop(context);
     FocusScope.of(context).unfocus();
     if (_description.trim().isNotEmpty) {
       String imageUrl = '';
@@ -45,14 +46,15 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
       }
 
       FirebaseFirestore.instance.collection('posts').add({
-        'timestamp': Timestamp.now(),
+        'timeStamp': Timestamp.now(),
         'userID': FirebaseAuth.instance.currentUser!.uid,
         'description': _description,
         'userName': FirebaseAuth.instance.currentUser!.displayName,
         'imageUrl': imageUrl
-      }).then((docRef) => docRef.update({'postID': docRef.id}));
-
-      Navigator.pop(context);
+      }).then((docRef) {
+        docRef.update({'postID': docRef.id});
+        Navigator.of(context).pop();
+      });
     }
   }
 

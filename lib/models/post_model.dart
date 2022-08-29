@@ -1,13 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class Post {
+class PostModel {
   final String id;
   final String userId;
   final String userName;
   final Timestamp timestamp;
   final String imageUrl;
   final String description;
-  Post(
+  PostModel(
       {required this.id,
       required this.userName,
       required this.userId,
