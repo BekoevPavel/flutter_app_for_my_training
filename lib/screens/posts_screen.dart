@@ -57,53 +57,56 @@ class _PostsScreenState extends State<PostsScreen> {
             return const CircularProgressIndicator();
           }
           return ListView.builder(
-            itemCount: snapshot.data?.docs.length,
+            itemCount: snapshot.data?.docs.length ?? 0,
             itemBuilder: ((context, index) {
               final QueryDocumentSnapshot doc = snapshot.data!.docs[index];
-              final PostModel postModel = PostModel(
-                id: doc['postID'],
-                userName: doc['userName'],
-                userId: doc['userID'],
-                imageUrl: doc['imageUrl'],
-                description: doc['description'],
-                timestamp: doc['timeStamp'],
-              );
-              return GestureDetector(
-                onTap: (() {
-                  Navigator.of(context)
-                      .pushNamed(ChatScreen.id, arguments: postModel);
-                }),
-                child: Padding(
-                  padding: const EdgeInsets.all(18.0),
-                  child: Column(
-                    children: [
-                      Container(
-                        height: MediaQuery.of(context).size.width,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          image: DecorationImage(
-                              image: NetworkImage(doc['imageUrl']),
-                              fit: BoxFit.cover),
+              if (doc['postID'] != '' && doc['postID'] != null) {
+                final PostModel postModel = PostModel(
+                  id: doc['postID'],
+                  userName: doc['userName'],
+                  userId: doc['userID'],
+                  imageUrl: doc['imageUrl'],
+                  description: doc['description'],
+                  timestamp: doc['timeStamp'],
+                );
+                return GestureDetector(
+                  onTap: (() {
+                    Navigator.of(context)
+                        .pushNamed(ChatScreen.id, arguments: postModel);
+                  }),
+                  child: Padding(
+                    padding: const EdgeInsets.all(18.0),
+                    child: Column(
+                      children: [
+                        Container(
+                          height: MediaQuery.of(context).size.width,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            image: DecorationImage(
+                                image: NetworkImage(doc['imageUrl']),
+                                fit: BoxFit.cover),
+                          ),
                         ),
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        doc['userName'],
-                        style: Theme.of(context).textTheme.headline6,
-                      ),
-                      const SizedBox(
-                        height: 5,
-                      ),
-                      Text(
-                        doc['description'],
-                        style: Theme.of(context).textTheme.headline5,
-                      ),
-                    ],
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          doc['userName'],
+                          style: Theme.of(context).textTheme.headline6,
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          doc['description'],
+                          style: Theme.of(context).textTheme.headline5,
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              );
+                );
+              }
+              return const CircularProgressIndicator();
             }),
           );
         }),

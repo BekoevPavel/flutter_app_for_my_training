@@ -21,40 +21,34 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
   Future<void> _submit({
     required File image,
   }) async {
-    Navigator.pop(context);
     FocusScope.of(context).unfocus();
     if (_description.trim().isNotEmpty) {
       String imageUrl = '';
       firebase_storage.FirebaseStorage storage =
           firebase_storage.FirebaseStorage.instance;
-
-      try {
-        await storage
-            .ref('images/${UniqueKey().toString()}.png')
-            .putFile(image)
-            .then((taskSnapshot) async {
-          imageUrl = await taskSnapshot.ref.getDownloadURL();
-        });
-      } on firebase_core.FirebaseException catch (e, o) {
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-            duration: const Duration(seconds: 10),
-            content: Text(e.message ?? 'error')));
-
-        print('ERROROROR: ${e.message}');
-
-        // ...
-      }
+      await storage
+          .ref('images/${UniqueKey().toString()}.png')
+          .putFile(image)
+          .then((taskSnapshot) async {
+        imageUrl = await taskSnapshot.ref.getDownloadURL();
+      });
 
       FirebaseFirestore.instance.collection('posts').add({
         'timeStamp': Timestamp.now(),
         'userID': FirebaseAuth.instance.currentUser!.uid,
         'description': _description,
         'userName': FirebaseAuth.instance.currentUser!.displayName,
-        'imageUrl': imageUrl
+        'imageUrl': imageUrl,
+        'postID': ''
       }).then((docRef) {
         docRef.update({'postID': docRef.id});
+
         Navigator.of(context).pop();
       });
+      // if (mounted) {
+      //   Navigator.pop(context);
+      // }
+
     }
   }
 
