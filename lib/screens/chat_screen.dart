@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_for_my_training/models/chat_model.dart';
 import 'package:flutter_app_for_my_training/models/post_model.dart';
+import 'package:flutter_app_for_my_training/widgets/message_list_tile.dart';
 
 class ChatScreen extends StatefulWidget {
   static const String id = 'chat_screen';
@@ -47,6 +48,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   .collection('posts')
                   .doc(post.id)
                   .collection('comments')
+                  .orderBy('timeStamp')
                   .snapshots(),
               builder: (context, snapshot) {
                 if (snapshot.hasError) {
@@ -61,8 +63,9 @@ class _ChatScreenState extends State<ChatScreen> {
                     child: Text('Loading...'),
                   );
                 }
+
                 return ListView.builder(
-                  itemCount: snapshot.data?.docs.length ?? 0,
+                  itemCount: snapshot.data!.docs.length,
                   itemBuilder: ((context, index) {
                     final QueryDocumentSnapshot doc =
                         snapshot.data!.docs[index];
@@ -72,18 +75,12 @@ class _ChatScreenState extends State<ChatScreen> {
                         userID: doc['userID'],
                         message: doc['message'],
                         timestamp: doc['timeStamp'] as Timestamp);
-                    return Container(
-                      padding: const EdgeInsets.all(8),
-                      child: Column(
-                        children: [
-                          Text('By ${chatModel.userName}'),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          Text(chatModel.message)
-                        ],
-                      ),
-                    );
+                    return Align(
+                        alignment: chatModel.userID ==
+                                FirebaseAuth.instance.currentUser!.uid
+                            ? Alignment.centerRight
+                            : Alignment.centerLeft,
+                        child: MessageListTile(chatModel: chatModel));
                   }),
                 );
               }),

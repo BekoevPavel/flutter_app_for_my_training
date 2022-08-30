@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_for_my_training/bloc/auth_cubit.dart';
@@ -61,14 +60,14 @@ class _PostsScreenState extends State<PostsScreen> {
             itemCount: snapshot.data?.docs.length,
             itemBuilder: ((context, index) {
               final QueryDocumentSnapshot doc = snapshot.data!.docs[index];
-              print('doc id :${doc['postID']}');
               final PostModel postModel = PostModel(
-                  id: doc['postID'],
-                  userName: doc['userName'],
-                  userId: doc['userID'],
-                  imageUrl: doc['imageUrl'],
-                  description: doc['description'],
-                  timestamp: doc['timeStamp']);
+                id: doc['postID'],
+                userName: doc['userName'],
+                userId: doc['userID'],
+                imageUrl: doc['imageUrl'],
+                description: doc['description'],
+                timestamp: doc['timeStamp'],
+              );
               return GestureDetector(
                 onTap: (() {
                   Navigator.of(context)

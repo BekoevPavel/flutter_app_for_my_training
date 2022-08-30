@@ -12,7 +12,9 @@ import 'screens/sign_in_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  PaintingBinding.instance.imageCache.maximumSizeBytes = 1024 * 1024 * 300;
   await Firebase.initializeApp();
+
   runApp(const MyApp());
 }
 

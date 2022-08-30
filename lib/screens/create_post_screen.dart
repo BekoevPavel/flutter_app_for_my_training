@@ -94,7 +94,6 @@ class _CreatePostScreenState extends State<CreatePostScreen> {
                   ],
                   // Done on keyboard
                   onEditingComplete: () {
-                    // TODO: Write to firebase, pass image
                     _submit(image: imageFile);
                   },
                 )
